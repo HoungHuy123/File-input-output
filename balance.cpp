@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <string>
+#include <iomanip>
 using namespace std; 
 
 struct  PERSON {
@@ -24,6 +25,25 @@ int countN(){
 return num; 
 }
 
+PERSON * readData(int &N){
+    PERSON * P;
+    P = new PERSON[N];
+    string firstname;
+    string lastname;
+    string temp;
+    ifstream infile;
+    infile.open("data.txt");
+    for (int i= 0; i < N; i++){
+        infile >> firstname >> lastname >> P[i].Balance;
+        getline(infile, temp);
+        string name = firstname + " " + lastname;
+        strcpy(P[i].Name, name.c_str());
+    }
+    infile.close();
+    return P;
+}
+
+/*
 void readfile(int N, PERSON P[]){
     string firstname;
     string lastname;
@@ -41,12 +61,13 @@ void readfile(int N, PERSON P[]){
     }
     infile.close();
 }
+*/
 
 void Display(int N, PERSON P[]){
     cout << "       " << "Name" << "            " << "Balance" << endl;
     cout << "---------------------------------------------" << endl;
     for (int i= 0; i < N; i++){
-        cout << "   " << P[i].Name << "     " << P[i].Balance << endl;
+        cout << setw(18) << left << P[i].Name << setw(10) << left << P[i].Balance << endl;
     }
 }
 
@@ -61,7 +82,26 @@ void FindRichest(int N, PERSON P[]){
     }
     cout << "The Customer with maximum balance is " << P[richest].Name << endl; 
 }
+/*
+//void Deposit(arr, N, custName, amount){
+void Deposit(string CustName, int N, PERSON P[], float amount){
 
+    CustName.c_str();
+    int i = N;
+    double deposite;
+  
+    while (CustName != P[i].Name){
+        i--;
+    }
+    cout << P[i].Name << ", how much would you like to deposite? ";
+    cin >> deposite;
+    
+    P[i].Balance += deposite;
+    cout << "\nNow your new balance is " << P[i].Balance << endl;
+
+
+}
+*/
 void Deposit(string CustName, int N, PERSON P[]){
 
     CustName.c_str();
@@ -98,7 +138,8 @@ int main (){
     string name;
     
 
-    readfile(N, P);
+    //readfile(N, P);
+    readData(N);
     Display(N,P);
     FindRichest(N,P);
 
@@ -107,7 +148,7 @@ int main (){
 
     Deposit(name, N,P);
     //Display(N, P);
-   NewCopy("data.txt", N, P);
+    NewCopy("data.txt", N, P);
 
     return 0;
 }
